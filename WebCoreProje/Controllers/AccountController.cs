@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using NETCore.Encrypt.Extensions;
+using System.Security.Claims;
 using WebCoreProje.Models;
 
 namespace WebCoreProje.Controllers
@@ -33,6 +36,16 @@ namespace WebCoreProje.Controllers
                         ModelState.AddModelError("","Kullanıcı Aktif Değil!");
                         return View(model);
                     }
+
+                    List<Claim> claims = new List<Claim>();
+                    claims.Add(new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()));
+                    claims.Add(new Claim("Name",user.Name?? string.Empty));//eğer null ise empty yaz
+                    claims.Add(new Claim("UserName",user.Username));
+                    //ClaimsPrincipal principal = new ClaimsPrincipal(new ClaimsIdentity(claims,"Cookie"));
+                    //HttpContext.SignInAsync("Cookie", principal);
+                    ClaimsPrincipal principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
+
+                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,principal);
                     return RedirectToAction("Index","Home");
                 }
             }

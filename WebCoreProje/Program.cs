@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using WebCoreProje.Models;
 
@@ -18,6 +19,16 @@ namespace WebCoreProje
             });//database için servisi ekledik, connection string leri oluþturduk. App setting e taþýdýk oradan okuyalým
 
             var app = builder.Build();
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt => 
+            { 
+                opt.Cookie.Name="UserAuthenticate";
+                opt.ExpireTimeSpan = TimeSpan.FromDays(1);//ne zaman silinsin
+                opt.SlidingExpiration = false; //Öteleme yapýp süre ekliyim mi
+                opt.LoginPath = "/Acoount/Login";
+             
+            });
+
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
