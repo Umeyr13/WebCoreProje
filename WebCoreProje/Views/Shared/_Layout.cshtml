@@ -27,12 +27,26 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li class="nav-item ms-auto">
-                            <a class="nav-link text-dark " asp-area="" asp-controller="Account" asp-action="Register"> <i class="fa-solid fa-right-to-bracket"></i> Kayıt</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark " asp-area="" asp-controller="Account" asp-action="Login"> <i class="fa-solid fa-right-to-bracket"></i> Giriş</a>
-                        </li>
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item ms-auto">
+                                <a class="nav-link text-dark " asp-area="" asp-controller="Account" asp-action="Profile"> <i class="fa-duotone fa-us  "></i> Profil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark " asp-area="" asp-controller="Account" asp-action="Logout"> <i class="fa-solid fa-right-from-bracket"></i> Çıkış</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item ms-auto">
+                                <a class="nav-link text-dark " asp-area="" asp-controller="Account" asp-action="Register"> <i class="fa-solid fa-user-plus"></i> Kayıt</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark " asp-area="" asp-controller="Account" asp-action="Login"> <i class="fa-solid fa-right-to-bracket"></i> Giriş</a>
+                            </li>
+                                
+                        }
                     </ul>
                 </div>
             </div>
