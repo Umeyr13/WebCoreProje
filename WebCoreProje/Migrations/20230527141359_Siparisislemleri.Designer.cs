@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebCoreProje.Models;
 
@@ -11,9 +12,10 @@ using WebCoreProje.Models;
 namespace WebCoreProje.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230527141359_Siparisislemleri")]
+    partial class Siparisislemleri
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,17 +41,17 @@ namespace WebCoreProje.Migrations
 
             modelBuilder.Entity("WebCoreProje.Models.Kategoriler", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("KategoriId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("KategoriId"), 1L, 1);
 
                     b.Property<string>("KategoriAdi")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("Id");
+                    b.HasKey("KategoriId");
 
                     b.ToTable("Kategoriler");
                 });
@@ -72,27 +74,33 @@ namespace WebCoreProje.Migrations
 
             modelBuilder.Entity("WebCoreProje.Models.Sepet", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("SepetId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SepetId"), 1L, 1);
 
                     b.Property<int?>("Adet")
                         .HasColumnType("int");
 
+                    b.Property<string>("KullaniciId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("ToplamTutar")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UrunlerId")
+                    b.Property<int?>("UrunId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UrunlerUrunId")
                         .HasColumnType("int");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.HasKey("SepetId");
 
-                    b.HasIndex("UrunlerId");
+                    b.HasIndex("UrunlerUrunId");
 
                     b.HasIndex("UserId");
 
@@ -101,11 +109,11 @@ namespace WebCoreProje.Migrations
 
             modelBuilder.Entity("WebCoreProje.Models.Siparis", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("SiparisId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SiparisId"), 1L, 1);
 
                     b.Property<string>("Ad")
                         .HasMaxLength(50)
@@ -114,6 +122,9 @@ namespace WebCoreProje.Migrations
                     b.Property<string>("Adres")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("KullaniciId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Soyad")
                         .HasMaxLength(80)
@@ -133,7 +144,7 @@ namespace WebCoreProje.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.HasKey("SiparisId");
 
                     b.HasIndex("UserId");
 
@@ -142,42 +153,48 @@ namespace WebCoreProje.Migrations
 
             modelBuilder.Entity("WebCoreProje.Models.SiparisDetay", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("SiparisDetayId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SiparisDetayId"), 1L, 1);
 
                     b.Property<int?>("Adet")
                         .HasColumnType("int");
 
-                    b.Property<int>("SiparisId")
+                    b.Property<int?>("SiparisId")
                         .HasColumnType("int");
 
                     b.Property<int?>("ToplamTutar")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UrunlerId")
+                    b.Property<int?>("UrunID")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<int?>("UrunlerUrunId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SiparisDetayId");
 
                     b.HasIndex("SiparisId");
 
-                    b.HasIndex("UrunlerId");
+                    b.HasIndex("UrunlerUrunId");
 
                     b.ToTable("SiparisDetay");
                 });
 
             modelBuilder.Entity("WebCoreProje.Models.Urunler", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UrunId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UrunId"), 1L, 1);
 
-                    b.Property<int>("KategorilerId")
+                    b.Property<int?>("KategoriId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("KategorilerKategoriId")
                         .HasColumnType("int");
 
                     b.Property<string>("UrunAciklamasi")
@@ -193,9 +210,9 @@ namespace WebCoreProje.Migrations
                     b.Property<int?>("UrunFiyati")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("UrunId");
 
-                    b.HasIndex("KategorilerId");
+                    b.HasIndex("KategorilerKategoriId");
 
                     b.ToTable("Urunler");
                 });
@@ -259,7 +276,7 @@ namespace WebCoreProje.Migrations
                 {
                     b.HasOne("WebCoreProje.Models.Urunler", "Urunler")
                         .WithMany("Sepet")
-                        .HasForeignKey("UrunlerId");
+                        .HasForeignKey("UrunlerUrunId");
 
                     b.HasOne("WebCoreProje.Models.User", "User")
                         .WithMany("Sepet")
@@ -285,13 +302,11 @@ namespace WebCoreProje.Migrations
                 {
                     b.HasOne("WebCoreProje.Models.Siparis", "Siparis")
                         .WithMany("SiparisDetay")
-                        .HasForeignKey("SiparisId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SiparisId");
 
                     b.HasOne("WebCoreProje.Models.Urunler", "Urunler")
                         .WithMany("SiparisDetay")
-                        .HasForeignKey("UrunlerId");
+                        .HasForeignKey("UrunlerUrunId");
 
                     b.Navigation("Siparis");
 
@@ -302,7 +317,7 @@ namespace WebCoreProje.Migrations
                 {
                     b.HasOne("WebCoreProje.Models.Kategoriler", "Kategoriler")
                         .WithMany("Urunler")
-                        .HasForeignKey("KategorilerId")
+                        .HasForeignKey("KategorilerKategoriId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

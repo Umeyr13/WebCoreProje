@@ -13,21 +13,22 @@ namespace WebCoreProje
             // Add services to the container.
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
             builder.Services.AddDbContext<DatabaseContext>(opt => 
-            { opt.UseSqlServer(builder.Configuration.GetConnectionString("StandartBaglanti"));
+            { opt.UseSqlServer(builder.Configuration.GetConnectionString("StandartBaglanti"), sqlServerOption => sqlServerOption.EnableRetryOnFailure());
                 //opt.UseLazyLoadingProxies  BAÐLANTILI TABLOLAR ÝÇÝ ARAÞTIR
 
             });//database için servisi ekledik, connection string leri oluþturduk. App setting e taþýdýk oradan okuyalým
 
-            var app = builder.Build();
-
-            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt => 
-            { 
-                opt.Cookie.Name="UserAuthenticate";
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
+            {
+                opt.Cookie.Name = "UserAuthenticate";
                 opt.ExpireTimeSpan = TimeSpan.FromDays(1);//ne zaman silinsin
                 opt.SlidingExpiration = false; //Öteleme yapýp süre ekliyim mi
-                opt.LoginPath = "/Acoount/Login";
-             
+                opt.LoginPath = "/Account/Login";
+
             });
+
+            var app = builder.Build();
+
 
 
             // Configure the HTTP request pipeline.

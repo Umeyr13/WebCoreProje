@@ -27,5 +27,16 @@ namespace WebCoreProje.Models
         public bool Aktivate { get; set; }
         public DateTime CreateDate { get; set; }
 
+        public virtual ICollection<Sepet> Sepet { get; set; }
+        public virtual ICollection<Siparis> Siparis { get; set; }
+        public virtual ICollection<Roles> Role { get; set; }
+
+        public User()
+        {
+            this.Sepet = new List<Sepet>();
+            this.Siparis = new List<Siparis>();
+            this.Role = new List<Roles>();
+        }
+
     }
 }

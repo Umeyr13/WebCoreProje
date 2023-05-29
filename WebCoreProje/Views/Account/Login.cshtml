@@ -18,7 +18,7 @@
                         <div class="col-md-6 col-lg-7 d-flex align-items-center">
                             <div class="card-body p-4 p-lg-5 text-black" style="opacity:0.9;">
 
-                                <div asp-validation-summary ="ModelOnly" class="text-danger small"> </div>
+                                
                                 <form method="post">
 
                                     <div class="d-flex align-items-center mb-3 pb-1">
@@ -30,6 +30,7 @@
                                     <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
 
                                     <div class="form-outline mb-4">
+                                        <div asp-validation-summary ="ModelOnly" class="text-danger small"> </div>
                                         <label class="form-label" for="form2Example17">User Name</label>
                                         <input type="text" asp-for="Username" class="form-control form-control-lg" />
 

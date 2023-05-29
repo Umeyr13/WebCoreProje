@@ -49,6 +49,7 @@ namespace WebCoreProje.Controllers
                     return RedirectToAction("Index","Home");
                 }
             }
+            ModelState.AddModelError("", "Kullanıcı Adı veya şifre hatalı");
             return View(model);
         }
 
