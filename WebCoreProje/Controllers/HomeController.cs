@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WebCoreProje.Models;
 
@@ -13,6 +14,7 @@ namespace WebCoreProje.Controllers
             _logger = logger;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             
@@ -28,6 +30,10 @@ namespace WebCoreProje.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

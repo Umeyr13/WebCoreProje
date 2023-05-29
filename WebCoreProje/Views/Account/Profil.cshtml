@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Profil Sayfası";
+}
+
+<h3>Profil</h3>
+<hr />
+<section class="col-4">
+    <div>
+        <div asp-validation-summary="All"class="text-danger">
+
+        </div>
+    </div>
+    <form method="post" action="AdKaydet">
+        <div class="input-group mb-3">
+            <input type="text" name="ad" class="form-control" placeholder="Ad" value="@ViewData["ad"]" aria-label="Ad" aria-describedby="button-addon2">
+        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Kaydet</button>
+    </div>
+    </form>
+    <form method="post" action="SoyadKaydet">
+        <div class="input-group mb-3">
+            <input type="text" name="soyad" class="form-control" placeholder="Soyad" value="@ViewData["soyad"]" aria-label="Soyad" aria-describedby="button-addon2">
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Kaydet</button>
+        </div>
+    </form>
+
+    <form method="post" action="UserNameKaydet">
+        <div class="input-group mb-3">
+            <input type="text" name="kulAdi" class="form-control" placeholder="Kullanıcı Adı" value="@ViewData["kullanıcı"]">
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Kaydet</button>
+        </div>
+    </form>
+
+    <form method="post" action="EmailKaydet">
+        <div class="input-group mb-3">
+            <input type="text" name="Email" class="form-control" placeholder="Email" value="@ViewData["email"]">
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Kaydet</button>
+        </div>
+    </form>
+
+    <form method="post">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Şifre" >
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Kaydet</button>
+        </div>
+    </form>
+</section>
