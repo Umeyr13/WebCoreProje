@@ -23,11 +23,15 @@ namespace WebCoreProje
                 opt.Cookie.Name = "UserAuthenticate";
                 opt.ExpireTimeSpan = TimeSpan.FromDays(1);//ne zaman silinsin
                 opt.SlidingExpiration = false; //Öteleme yapýp süre ekliyim mi
-                opt.LoginPath = "/Account/Login";
-
+                opt.LoginPath = "/Account/Login";//Giriþ yapmadýysa buraya at
+                opt.LogoutPath = "/Account/Login";//Çýkýþ yaparsa buraya at
+                opt.AccessDeniedPath = "/Home/AccessDenied";//Yetkisi yoksa buraya at
+             
             });
 
             var app = builder.Build();
+
+
 
 
 
@@ -45,8 +49,10 @@ namespace WebCoreProje
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseAuthentication();// Önce Giriþi kontrol et
+            app.UseAuthorization();// Sonra rolleri kontrol et
+           
 
-            app.UseAuthorization();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebCoreProje.Models;
+using WebCoreProje.Models.Entities;
 
 namespace WebCoreProje.Models
 {

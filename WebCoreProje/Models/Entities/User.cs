@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebCoreProje.Models
+namespace WebCoreProje.Models.Entities
 {
     [Table("User")]
     public class User
@@ -15,13 +15,13 @@ namespace WebCoreProje.Models
         [StringLength(30)]
         public string? Surname { get; set; }
 
-        [Required,StringLength(50)]
+        [Required, StringLength(50)]
         public string Email { get; set; }
 
-        [Required,StringLength(30)]
+        [Required, StringLength(30)]
         public string Username { get; set; }
 
-        [Required,StringLength(250)]
+        [Required, StringLength(250)]
         public string Pasword { get; set; }
 
         public bool Aktivate { get; set; }
@@ -37,6 +37,9 @@ namespace WebCoreProje.Models
             this.Siparis = new List<Siparis>();
             this.Role = new List<Roles>();
         }
+
+        //[StringLength(20),Required]
+        //public string Role { get; set; }="user";//default değer
 
     }
 }
