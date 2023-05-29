@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebCoreProje.Models
+namespace WebCoreProje.Models.Entities
 {
     [Table("Kategoriler")]
     public class Kategoriler

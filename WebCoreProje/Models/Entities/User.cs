@@ -29,17 +29,15 @@ namespace WebCoreProje.Models.Entities
 
         public virtual ICollection<Sepet> Sepet { get; set; }
         public virtual ICollection<Siparis> Siparis { get; set; }
-        public virtual ICollection<Roles> Role { get; set; }
-
+        
         public User()
         {
             this.Sepet = new List<Sepet>();
-            this.Siparis = new List<Siparis>();
-            this.Role = new List<Roles>();
+            this.Siparis = new List<Siparis>();           
         }
 
-        //[StringLength(20),Required]
-        //public string Role { get; set; }="user";//default değer
+        [StringLength(20), Required]
+        public string Role { get; set; } = "user";//default değer
 
     }
 }

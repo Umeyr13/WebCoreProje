@@ -2,13 +2,14 @@
     ViewData["Title"] = "Profil Sayfası";
 }
 
-<h3>Profil</h3>
+<h3>@ViewData["Title"]</h3>
 <hr />
 <section class="col-4">
     <div>
-        <div asp-validation-summary="All"class="text-danger">
-
+        <div asp-validation-summary="All" class="text-danger">
+            hatamesajı
         </div>
+       
     </div>
     <form method="post" action="AdKaydet">
         <div class="input-group mb-3">

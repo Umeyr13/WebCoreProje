@@ -3,7 +3,7 @@ using System.ComponentModel;
 using Microsoft.AspNetCore.DataProtection;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebCoreProje.Models
+namespace WebCoreProje.Models.Entities
 {
     public class Urunler
     {
@@ -19,7 +19,7 @@ namespace WebCoreProje.Models
         public string UrunAciklamasi { get; set; }
 
         [DisplayName("Urun Fiyatı")]
-        public Nullable<int> UrunFiyati { get; set; }
+        public int? UrunFiyati { get; set; }
 
         public virtual Kategoriler Kategoriler { get; set; }
 
@@ -29,8 +29,8 @@ namespace WebCoreProje.Models
 
         public Urunler()
         {
-            this.Sepet = new List<Sepet>();
-            this.SiparisDetay = new List<SiparisDetay>();
+            Sepet = new List<Sepet>();
+            SiparisDetay = new List<SiparisDetay>();
         }
     }
 }

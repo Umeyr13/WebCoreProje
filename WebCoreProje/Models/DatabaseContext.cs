@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebCoreProje.Models;
 using WebCoreProje.Models.Entities;
 
 namespace WebCoreProje.Models
@@ -12,6 +11,8 @@ namespace WebCoreProje.Models
 
         public virtual DbSet<User> Users { get; set; }
 
-        public DbSet<WebCoreProje.Models.Urunler>? Urunler { get; set; }
+        public DbSet<Urunler>? Urunler { get; set; }
+
+        public DbSet<Kategoriler> Kategoriler { get; set; }
     }
 }

@@ -42,7 +42,7 @@ namespace WebCoreProje.Controllers
                     List<Claim> claims = new List<Claim>();
                     claims.Add(new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()));
                     claims.Add(new Claim("Name",user.Name?? string.Empty));//eğer null ise empty yaz
-                    //claims.Add(new Claim(ClaimTypes.Role,user.Role ));
+                    claims.Add(new Claim(ClaimTypes.Role,user.Role ));
                     claims.Add(new Claim("UserName",user.Username));
 
                     //ClaimsPrincipal principal = new ClaimsPrincipal(new ClaimsIdentity(claims,"Cookie"));
@@ -83,7 +83,7 @@ namespace WebCoreProje.Controllers
                    ModelState.AddModelError("Username","Bu kullanıcı adı zaten kayıtlı");                    
                 }
 
-                if (kullanicimail.Email != null)
+                if (kullanicimail != null)
                 {
                    ModelState.AddModelError("Email","Bu email zaten kayıtlı");                 
                 }
@@ -101,9 +101,7 @@ namespace WebCoreProje.Controllers
                     Pasword = sifre,
                     CreateDate = DateTime.Now,
                     Aktivate = true,
-                    //Role ="user"//default role verdik.
-                    
-
+                    Role ="user"//default role verdik.
 
                 };
 
@@ -173,11 +171,10 @@ namespace WebCoreProje.Controllers
         {
             User user = UserFind();
             User kullaniciname = _db.Users.FirstOrDefault(x => x.Username == kulAdi && x.Id != user.Id);//ve bulduğun ben değilsem..        
-
             if (kullaniciname != null)
             {
                 ModelState.AddModelError("Username", "Bu kullanıcı adı zaten kayıtlı");
-                 return RedirectToAction("Profil");
+                 return RedirectToAction("Profil"); // Hata! Eğer RedirectToAction yaparsak validation hataları çıkmıyor. View yaparsak da Textboxlar boş kalıyor.
             }
 
             user.Username = kulAdi;
@@ -186,11 +183,20 @@ namespace WebCoreProje.Controllers
         }
 
         [HttpPost]
-        public IActionResult EmailKaydet()
+        public IActionResult EmailKaydet(string Email)
         {
-            User user = UserFind();
 
-            return View();
+            User user = UserFind();
+            User kullaniciMail = _db.Users.FirstOrDefault(x => x.Username == Email && x.Id != user.Id);
+
+            if (kullaniciMail != null)
+            {
+                ModelState.AddModelError("Email","Bu Email zaten kayıtlı" );
+                return RedirectToAction("Profil");
+            }
+            user.Email = Email;
+            _db.SaveChanges();
+            return RedirectToAction("Profil");
         }
 
         public IActionResult Logout()
