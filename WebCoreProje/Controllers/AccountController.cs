@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NETCore.Encrypt.Extensions;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using WebCoreProje.Models;
 using WebCoreProje.Models.Entities;
@@ -101,7 +102,9 @@ namespace WebCoreProje.Controllers
                     Pasword = sifre,
                     CreateDate = DateTime.Now,
                     Aktivate = true,
-                    Role ="user"//default role verdik.
+                    Role ="user",//default role verdik.
+                    ProfilImagefileName = "~/resim/No_Image_Available"
+
 
                 };
 
@@ -135,16 +138,21 @@ namespace WebCoreProje.Controllers
             return _db.Users.Find(userid);
         }
 
-        public IActionResult Profil()
+        private void ProfilBilgileri()
         {
-            
             User user = UserFind();
             ViewData["ad"] = user.Name;
-            ViewData["soyad"]= user.Surname;
+            ViewData["soyad"] = user.Surname;
             ViewData["kullanıcı"] = user.Username;
             ViewData["email"] = user.Email;
-            //ViewData["şifre"] = user.Pasword; şifreyi geri çözdürmek lazım şifre şifreli sonra bakarız.
+            ViewData["sifre"] = user.Pasword;
+            ViewData["resim"] = user.ProfilImagefileName;
+            
+        }
 
+        public IActionResult Profil()
+        {
+            ProfilBilgileri();
             return View();
         }
 
@@ -154,7 +162,9 @@ namespace WebCoreProje.Controllers
             User user = UserFind();
             user.Name = ad;
             _db.SaveChanges();
-            return RedirectToAction("Profil"); //Direk return View dersek ViewData lar boş kalıyor. onun yerine RedirectToAction kullandık. Action u yeniden yüklüyor doldurarak.
+            ViewData["mesaj"] = "Ad Kaydedildi";
+            ProfilBilgileri();// Aşağıdaki açıklamadan sonra bu eklendi. direk view e yönlendiriyoruz ama önce viewbag leri tekrar dollduruyoruz yoksa boş gider..
+            return View("Profil"); //Direk return View dersek ViewData lar boş kalıyor. onun yerine RedirectToAction kullandık. Action u yeniden yüklüyor doldurarak. 
         }
 
         [HttpPost]
@@ -163,46 +173,103 @@ namespace WebCoreProje.Controllers
             User user = UserFind();
             user.Surname = soyad;
             _db.SaveChanges();
-            return RedirectToAction("Profil");
+            ViewData["mesaj"] = "Soyad Kaydedildi";
+            ProfilBilgileri();
+            return View("Profil");
         }
 
         [HttpPost]
         public IActionResult UserNameKaydet(string kulAdi)
         {
-            User user = UserFind();
-            User kullaniciname = _db.Users.FirstOrDefault(x => x.Username == kulAdi && x.Id != user.Id);//ve bulduğun ben değilsem..        
-            if (kullaniciname != null)
+            if (ModelState.IsValid)
             {
-                ModelState.AddModelError("Username", "Bu kullanıcı adı zaten kayıtlı");
-                 return RedirectToAction("Profil"); // Hata! Eğer RedirectToAction yaparsak validation hataları çıkmıyor. View yaparsak da Textboxlar boş kalıyor.
+
+                User user = UserFind();
+                User kullaniciname = _db.Users.FirstOrDefault(x => x.Username == kulAdi && x.Id != user.Id);//ve bulduğun ben değilsem..        
+                if (kullaniciname != null)
+                {
+                    ModelState.AddModelError("Username", "Bu kullanıcı adı zaten kayıtlı");
+                    ProfilBilgileri();
+                     return View("Profil"); // Hata! Eğer RedirectToAction yaparsak validation hataları çıkmıyor. View yaparsak da Textboxlar boş kalıyor.
+                }
+
+                user.Username = kulAdi;
+                _db.SaveChanges();
+                ViewData["mesaj"] = "Kullanıcı adı Kaydedildi";
+                ProfilBilgileri();
+                return View("Profil");
             }
 
-            user.Username = kulAdi;
-            _db.SaveChanges();
-            return RedirectToAction("Profil");
+            return View(nameof(Profil));
         }
 
         [HttpPost]
         public IActionResult EmailKaydet(string Email)
         {
-
-            User user = UserFind();
-            User kullaniciMail = _db.Users.FirstOrDefault(x => x.Username == Email && x.Id != user.Id);
-
-            if (kullaniciMail != null)
+            if (ModelState.IsValid)
             {
-                ModelState.AddModelError("Email","Bu Email zaten kayıtlı" );
-                return RedirectToAction("Profil");
+                User user = UserFind();
+                User kullaniciMail = _db.Users.FirstOrDefault(x => x.Email == Email && x.Id != user.Id);
+
+                if (kullaniciMail != null)
+                {
+                    ModelState.AddModelError("Email","Bu Email zaten kayıtlı" );
+                    ProfilBilgileri();
+                    return View("Profil");
+                }
+                user.Email = Email;
+                _db.SaveChanges();
+                ProfilBilgileri();
+                ViewData["mesaj"] = "Email Kaydedildi";
             }
-            user.Email = Email;
-            _db.SaveChanges();
-            return RedirectToAction("Profil");
+            return View("Profil");
+        }
+
+        [HttpPost]
+        public IActionResult SifreKaydet([MaxLength(16),MinLength(6)]string Sfre)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = UserFind();
+                if (_db.Users.Any(x=>x.Pasword != Sfre && x.Id == user.Id))
+                {
+                    user.Pasword = StringHashed(Sfre);
+                    _db.SaveChanges();
+
+                }
+                    ViewData["mesaj"]="Şifre Kaydedildi";
+            }
+            ProfilBilgileri();
+            return View(nameof(Profil));
+        }
+
+        public IActionResult ProfilResimKaydet(IFormFile resim)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = UserFind();
+                string dosyaadi = user.Id+".jpg";
+                Stream dosya = new FileStream("wwwroot/resim/"+dosyaadi,FileMode.OpenOrCreate);
+                resim.CopyTo(dosya);
+                dosya.Close();//stream ı kapatmak lazım
+                dosya.Dispose();//stream ı iş bitince sil 
+                if (System.IO.File.Exists("wwwroot/resim/" + dosyaadi))
+                {
+                    user.ProfilImagefileName = dosyaadi;
+                    _db.SaveChanges();
+
+                }
+                user.ProfilImagefileName = dosyaadi;
+                _db.SaveChanges();
+            }
+            ProfilBilgileri();
+            return View(nameof(Profil));
         }
 
         public IActionResult Logout()
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login");
+            return View("Login");
         }
 
 

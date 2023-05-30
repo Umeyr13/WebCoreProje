@@ -4,44 +4,75 @@
 
 <h3>@ViewData["Title"]</h3>
 <hr />
-<section class="col-4">
-    <div>
-        <div asp-validation-summary="All" class="text-danger">
-            hatamesajı
-        </div>
+<div class="row">
+
+    <section class="col-6">
+        <form method="post" action="ProfilResimKaydet" enctype="multipart/form-data">
+            
+            <div class="text-center mb-3">
+                <img src="~/resim/@ViewData["resim"]" class="img-thumbnail rounded-circle "width="260" />
+
+
+            </div>
+            <div class="input-group mb-3">
+                <input type="file" name="resim" class="form-control">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Kaydet</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="col-6">
+        <div>
+            <div asp-validation-summary="All" class="text-danger">
+            
+            </div>
+            <input type="hidden" value="@ViewData["mesaj"]" id="mesaj" />
        
-    </div>
-    <form method="post" action="AdKaydet">
-        <div class="input-group mb-3">
-            <input type="text" name="ad" class="form-control" placeholder="Ad" value="@ViewData["ad"]" aria-label="Ad" aria-describedby="button-addon2">
-        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Kaydet</button>
-    </div>
-    </form>
-    <form method="post" action="SoyadKaydet">
-        <div class="input-group mb-3">
-            <input type="text" name="soyad" class="form-control" placeholder="Soyad" value="@ViewData["soyad"]" aria-label="Soyad" aria-describedby="button-addon2">
+        </div>
+        <form method="post" action="AdKaydet">
+            <div class="input-group mb-3">
+                <input type="text" name="ad" class="form-control" placeholder="Ad" value="@ViewData["ad"]" aria-label="Ad" aria-describedby="button-addon2">
             <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Kaydet</button>
         </div>
-    </form>
+        </form>
+        <form method="post" action="SoyadKaydet">
+            <div class="input-group mb-3">
+                <input type="text" name="soyad" class="form-control" placeholder="Soyad" value="@ViewData["soyad"]" aria-label="Soyad" aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Kaydet</button>
+            </div>
+        </form>
 
-    <form method="post" action="UserNameKaydet">
-        <div class="input-group mb-3">
-            <input type="text" name="kulAdi" class="form-control" placeholder="Kullanıcı Adı" value="@ViewData["kullanıcı"]">
-            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Kaydet</button>
-        </div>
-    </form>
+        <form method="post" action="UserNameKaydet">
+            <div class="input-group mb-3">
+                <input type="text" name="kulAdi" class="form-control" placeholder="Kullanıcı Adı" value="@ViewData["kullanıcı"]">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Kaydet</button>
+            </div>
+        </form>
 
-    <form method="post" action="EmailKaydet">
-        <div class="input-group mb-3">
-            <input type="text" name="Email" class="form-control" placeholder="Email" value="@ViewData["email"]">
-            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Kaydet</button>
-        </div>
-    </form>
+        <form method="post" action="EmailKaydet">
+            <div class="input-group mb-3">
+                <input type="text" name="Email" class="form-control" placeholder="Email" value="@ViewData["email"]">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Kaydet</button>
+            </div>
+        </form>
 
-    <form method="post">
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Şifre" >
-            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Kaydet</button>
-        </div>
-    </form>
-</section>
+        <form method="post" action="SifreKaydet">
+            <div class="input-group mb-3">
+                <input type="password" name="Sfre" class="form-control" placeholder="Şifre" value="@ViewData["sifre"]">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Kaydet</button>
+            </div>
+        </form>
+    </section>
+
+</div>
+
+@section Scripts{
+
+		@if (ViewData["mesaj"] != null)
+		{
+		<script>
+			var mesaj =$("#mesaj").val();
+			toastr["success"](mesaj, "")
+		   </script>
+		}
+}

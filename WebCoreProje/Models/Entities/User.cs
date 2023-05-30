@@ -21,7 +21,7 @@ namespace WebCoreProje.Models.Entities
         [Required, StringLength(30)]
         public string Username { get; set; }
 
-        [Required, StringLength(250)]
+        [Required, StringLength(250),MinLength(6), MaxLength(16)]
         public string Pasword { get; set; }
 
         public bool Aktivate { get; set; }
@@ -39,5 +39,7 @@ namespace WebCoreProje.Models.Entities
         [StringLength(20), Required]
         public string Role { get; set; } = "user";//default değer
 
+        [StringLength(255)]
+        public string ProfilImagefileName { get; set; }
     }
 }
