@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using WebCoreProje.Models;
 
 namespace WebCoreProje
@@ -17,7 +18,7 @@ namespace WebCoreProje
                 //opt.UseLazyLoadingProxies  BAÐLANTILI TABLOLAR ÝÇÝ ARAÞTIR
 
             });//database için servisi ekledik, connection string leri oluþturduk. App setting e taþýdýk oradan okuyalým
-
+            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
             {
                 opt.Cookie.Name = "UserAuthenticate";
@@ -28,6 +29,7 @@ namespace WebCoreProje
                 opt.AccessDeniedPath = "/Home/AccessDenied";//Yetkisi yoksa buraya at
              
             });
+
 
             var app = builder.Build();
 
