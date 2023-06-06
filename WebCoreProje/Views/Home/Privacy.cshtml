@@ -1,6 +1,92 @@
-﻿@{
+﻿@model List<City>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+@{
     ViewData["Title"] = "Privacy Policy";
 }
 <h1>@ViewData["Title"]</h1>
 
 <p>Use this page to detail your site's privacy policy.</p>
+
+
+<select id="cityDropdown">
+    @foreach (var city in Model)
+    {
+        <option value="@city.Id">@city.Name</option>
+    }
+</select>
+
+<script>
+    $(document).ready(function () {
+        // Dropdown listesindeki seçim değiştiğinde çalışacak fonksiyon
+        $("#cityDropdown").change(function () {
+            var selectedCityId = $(this).val();
+            var selectedCityName = $(this).find("option:selected").text();
+
+            // Seçilen şehir hakkında işlemler yapabilirsiniz
+            console.log("Selected City ID: " + selectedCityId);
+            console.log("Selected City Name: " + selectedCityName);
+        });
+    });
+    
+</script>
+<h2>başka</h2>
+
+
+
+
+
+@*125da1c5248d6b9683ecc95725a6f90c*@
+<
+<select id="cityDropdown"></select>
+<select id="districtDropdown"></select>
+
+
+@*
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // İllerin alındığı API isteği
+        $.ajax({
+            url: "https://api.opencagedata.com/geocode/v1/",
+            data: {
+                q: "turkey",
+                appid: "db4c6dde15f648e8a5324bf8df0db11d"
+            },
+            success: function (data) {
+                var cities = data.name; // İl adları
+
+                // İl dropdown listesine ekleme
+                var cityDropdown = $("#cityDropdown");
+                for (var i = 0; i < cities.length; i++) {
+                    cityDropdown.append("<option value='" + cities[i] + "'>" + cities[i] + "</option>");
+                }
+            }
+        });
+
+        // İlçelerin alındığı API isteği
+        $("#cityDropdown").change(function () {
+            var selectedCity = $(this).val();
+
+            $.ajax({
+                url: "https://api.opencagedata.com/geocode/version/format?parameters",
+                data: {
+                    q: selectedCity + ",turkey",
+                    appid: "db4c6dde15f648e8a5324bf8df0db11d"
+                },
+                success: function (data) {
+                    var districts = data.districts; // İlçe adları
+
+                    // İlçe dropdown listesini temizle
+                    $("#districtDropdown").empty();
+
+                    // İlçe dropdown listesine ekleme
+                    var districtDropdown = $("#districtDropdown");
+                    for (var i = 0; i < districts.length; i++) {
+                        districtDropdown.append("<option value='" + districts[i] + "'>" + districts[i] + "</option>");
+                    }
+                }
+            });
+        });
+    });
+</script>
+*@

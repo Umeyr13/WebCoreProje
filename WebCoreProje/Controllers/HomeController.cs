@@ -21,10 +21,10 @@ namespace WebCoreProje.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+        //public IActionResult Privacy()
+        //{
+        //    return View();
+        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -35,5 +35,13 @@ namespace WebCoreProje.Controllers
         {
             return View();
         }
+        public async Task<List<City>> Privacy()
+        {
+            var weatherService = new WeatherService();
+            var cities = await weatherService.GetCitiesAsync();
+
+            return cities;
+        }
+
     }
 }

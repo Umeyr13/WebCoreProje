@@ -11,7 +11,7 @@ namespace WebCoreProje.Controllers
     [Authorize(Roles = "admin, başka rol, bir başka rol")]
     public class UserController : Controller
     {
-        private readonly DatabaseContext _db;//bunu yazınca alttaki otomatik gelir.. Elle yazmaya gerek yok
+        private readonly DatabaseContext _db;//bunu yazınca alttaki otomatik gelir.. Elle yazmaya gerek yok. generate ctor
         private readonly IMapper _mapper;
 
         public UserController(DatabaseContext db,IMapper mapper)
